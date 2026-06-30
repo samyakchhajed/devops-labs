@@ -1,4 +1,4 @@
-name: 01-first-github-actions-workflow
+name: CI - Lab 2.1 First GitHub Actions Workflow
 
 on:
   push:

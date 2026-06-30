@@ -39,8 +39,8 @@ pre-commit install
 
 **Pipeline Execution:** Push a clean commit to your GitHub repository and check the **Actions** tab on GitHub to verify that the workflow succeeds.
 
-**Secrets Blocking (Gitleaks):** 
-1. Create a dummy secret in a file (e.g., `temp.txt` containing `API_KEY="xoxb-1234567890"`).
+**Secrets Blocking (Gitleaks):**
+1. Create a dummy secret in a file (e.g., `temp.txt` containing `API_KEY="xoxb-MOCK-TOKEN-VAL"`).
 2. Attempt to run `git add temp.txt` and `git commit -m "add test secret"`.
 3. Confirm that `pre-commit` runs Gitleaks and blocks the commit from succeeding.
 
@@ -61,4 +61,30 @@ Revert the failing test change, remove any temporary credentials files, and push
 # Revert the last commit if it was a breaking test
 git revert HEAD
 git push origin main
+```
+
+---
+
+## Proof of Success
+
+### 1. Local Pytest Execution
+```text
+test_app.py .                                                            [100%]
+=========================== 1 passed in 0.56s =================================
+```
+
+### 2. GitHub Actions Workflow
+Workflow run history and status (Initial Green Run, Deliberate Failure Red Run, Revert Green Run) are tracked and verified directly in the **Actions** tab of this repository.
+
+### 3. Local Gitleaks Pre-commit Hook (Secret Blocking)
+```text
+Detect hardcoded secrets.................................................Failed
+- hook id: gitleaks
+- exit code: 1
+
+Finding:     API_KEY="REDACTED
+RuleID:      slack-bot-token
+File:        2-ci_cd/01-first-github-actions-workflow/temp.txt
+Line:        1
+Leaks found: 1
 ```

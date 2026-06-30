@@ -1,0 +1,38 @@
+name: 01-first-github-actions-workflow
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - '2-ci_cd/01-first-github-actions-workflow/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '2-ci_cd/01-first-github-actions-workflow/**'
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 2-ci_cd/01-first-github-actions-workflow
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+ 
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          pytest test_app.py -v
+          echo "Success! All tests passed"
+ 

@@ -1,33 +1,40 @@
-# devops-labs
+# Phase 2 — CI/CD and GitHub Actions
 
-Hands-on labs built as structured skill-building before the main devops-projects repo. Each lab is a standalone exercise targeting a specific concept. Every lab is pushed only when fully complete — files, README, architecture diagram, and deployment proof.
-
-All labs run remotely. Nothing runs on a local machine.
+These labs cover Continuous Integration and Continuous Deployment (CI/CD) using GitHub Actions.
 
 ---
 
-## Common Environment Setup
+## Environment Setup
 
-### 1. Create a Development Droplet
-Spin up a separate DigitalOcean Droplet to use as your development environment. This is where you install tools and run all commands. It is not the infrastructure being provisioned — it is the machine you work from.
+### 1. GitHub Repository Setup
+Since GitHub Actions run on GitHub servers, you need to push your local code to a remote GitHub repository.
+1. Create a new repository on [GitHub](https://github.com).
+2. Link your local directory to the remote repository:
+   ```bash
+   git init
+   git remote add origin <your-github-repo-url>
+   ```
 
-### 2. Set Environment Variables
-Each has additional environment-specific setup. The following are required across all phases:
+### 2. Install pre-commit and Gitleaks
+On your development machine, run the following to install `pre-commit` and `gitleaks` for scanning secrets:
 ```bash
-export TF_VAR_do_token="your_digitalocean_api_token"
-export AWS_ACCESS_KEY_ID="your_spaces_access_key"
-export AWS_SECRET_ACCESS_KEY="your_spaces_secret_key"
+# Install pre-commit using pip
+pip install pre-commit
+
+# Install Gitleaks (Linux x64 example)
+VERSION=$(curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep tag_name | cut -d '"' -f 4)
+wget https://github.com/gitleaks/gitleaks/releases/download/${VERSION}/gitleaks_${VERSION:1}_linux_x64.tar.gz
+tar -zxvf gitleaks_${VERSION:1}_linux_x64.tar.gz
+sudo mv gitleaks /usr/local/bin/
+gitleaks version
 ```
 
 ---
 
-## Phases
+## Labs
 
-| Phase | Topic |
+| Lab | Topic |
 |---|---|
-| [1-Terraform](./1-terraform/README.md) | Infrastructure as Code |
-| [2-CI/CD](./2-ci_cd/README.md) | GitHub Actions Pipelines |
-| [3-Observability](./3-observability/README.md) | Prometheus and Grafana |
-| [4-Kubernetes](./4-kubernetes/README.md) | Container Orchestration |
-| [5-Azure](./5-azure/README.md) | Azure Services |
-| [6-Multicloud](./6-multicloud/README.md) | AWS and Azure |
+| [01-first-github-actions-workflow](./01-first-github-actions-workflow/README.md) | First GitHub Actions Workflow + pre-commit Gitleaks |
+| [02-multi-job-docker-build-push](./02-multi-job-docker-build-push/README.md) | Multi-Job Pipeline with Docker Build and Push |
+| [03-terraform-pipeline-environment-approval](./03-terraform-pipeline-environment-approval/README.md) | Terraform in GitHub Actions with Environment Approval |

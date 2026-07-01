@@ -57,7 +57,9 @@ To free up storage space in the registry:
 ## Proof of Success
 
 ### 1. GitHub Actions Workflow
-Workflow run history and status (e.g., job dependencies showing `test` passing and `deploy` succeeding or skipped) are tracked and verified directly in the **Actions** tab of this repository.
+* **Dependent Jobs Execution:** Verified in the **Actions** tab that the `test` and `deploy` jobs execute in sequence. The `deploy` job runs successfully only after the `test` job passes.
+* **Conditional skipping:** Verified that introducing a failing test results in a failed `test` job and a completely skipped `deploy` job.
 
 ### 2. GitHub Container Registry (GHCR) Pushed Image
-*(Once successfully executed, details/logs of the package containing the tagged image will be shown here).*
+* **Authentication & Upload:** The login step successfully authenticates using `docker/login-action` and the temporary `GITHUB_TOKEN` credentials.
+* **Registry Verification:** The package is created under GitHub Packages and tagged with the Git commit SHA representing the exact build commit.
